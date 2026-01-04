@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ===== NIGHT SKY BACKGROUND ===== */
+body {
+  background: radial-gradient(circle at top, #1b1f3b, #050510);
+  color: #fff;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* ===== BACKGROUND LAYER ===== */
+.background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Stars */
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: starMove linear infinite;
+}
+
+@keyframes starMove {
+  0% { transform: translateY(0); opacity: 0.4; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-200vh); opacity: 0; }
+}
+
+/* Hearts & Butterflies */
+.floating {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.9;
+  animation: drift linear infinite;
+}
+
+@keyframes drift {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(
+      calc(-150px + 300px * var(--x)),
+      calc(-400px - 800px * var(--y))
+    ) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* ===== CONTENT ABOVE BACKGROUND ===== */
+.reel {
+  position: relative;
+  z-index: 2;
+  max-width: 430px;
+  margin: auto;
+}
+
+/* ===== HERO ===== */
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  color: #ffd1dc;
+  min-height: 70px;
+}
+
+.hero p {
+  margin-top: 16px;
+  opacity: 0;
+  animation: fadeIn 1.5s forwards;
+  animation-delay: 4s;
+}
+
+@keyframes fadeIn { to { opacity: 1; } }
+
+.btn {
+  margin-top: 40px;
+  padding: 14px 36px;
+  background: #ff5c8a;
+  color: white;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 1rem;
+  opacity: 0;
+  animation: fadeIn 1.5s forwards;
+  animation-delay: 5s;
+}
+
+/* ===== MEMORIES ===== */
+.gallery {
+  padding: 90px 20px;
+}
+
+.gallery h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-family: 'Playfair Display', serif;
+  color: #ffd1dc;
+}
+
+.grid {
+  max-width: 1100px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
+}
+
+.photo {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+}
+
+.photo img {
+  width: 100%;
+  display: block;
+  transition: transform 0.4s;
+}
+
+.photo:hover img {
+  transform: scale(1.1);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  opacity: 0;
+  padding: 20px;
+  transition: 0.3s;
+}
+
+.photo:hover .overlay {
+  opacity: 1;
+}
+
+/* ===== SPECIAL MESSAGE ===== */
+.card {
+  margin: 80px 16px;
+  padding: 34px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.card h3 {
+  font-family: 'Playfair Display', serif;
+  color: #ffd1dc;
+  margin-bottom: 16px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 2rem; }
+  .grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background" id="background"></div>
+
+<div class="reel">
+
+<!-- HERO -->
+<section class="hero">
+  <h1 id="typing"></h1>
+  <p id="subText"></p>
+  <a href="#gallery" class="btn">Start the Celebration 🎉</a>
+</section>
+
+<!-- MEMORIES -->
+<section id="gallery" class="gallery">
+  <h2>Our Memories</h2>
+  <div class="grid">
+    <div class="photo">
+      <img src="images/memory1.jpg">
+      <div class="overlay">Every smile of yours melts my heart ❤️</div>
+    </div>
+    <div class="photo">
+      <img src="images/memory2.jpg">
+      <div class="overlay">With you, everything feels right 💕</div>
+    </div>
+    <div class="photo">
+      <img src="images/memory3.jpg">
+      <div class="overlay">You are my forever 🫶</div>
+    </div>
+    <div class="photo">
+      <img src="images/memory4.jpg">
+      <div class="overlay">My favorite chapter of life ✨</div>
+    </div>
+    <div class="photo">
+      <img src="images/memory5.jpg">
+      <div class="overlay">Just us. Just love</div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECIAL MESSAGE -->
+<div class="card">
+  <h3>A Special Message for You</h3>
+  <p>
+    Loving you is my favorite thing in the world.
+    No matter where life takes us, my heart will always find its way back to you.
+    Today, tomorrow, and always — it’s you.
+  </p>
+</div>
+
+</div>
+
+<script>
+/* ===== CHANGE HER NAME HERE ===== */
+const herName = "My Love";
+
+/* ===== TYPING EFFECT ===== */
+const text = `Happy Birthday, ${herName} 💖`;
+const subText = "Today is all about celebrating you and the joy you bring into my life";
+let i = 0;
+
+function typeText() {
+  if (i < text.length) {
+    document.getElementById("typing").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typeText, 90);
+  } else {
+    document.getElementById("subText").innerText = subText;
+  }
+}
+typeText();
+
+/* ===== BACKGROUND ANIMATIONS ===== */
+const bg = document.getElementById("background");
+
+function createStar() {
+  const star = document.createElement("div");
+  star.className = "star";
+  star.style.left = Math.random() * 100 + "vw";
+  star.style.top = "100vh";
+  star.style.animationDuration = 20 + Math.random() * 30 + "s";
+  bg.appendChild(star);
+  setTimeout(() => star.remove(), 60000);
+}
+
+function createFloating(icon, color) {
+  const el = document.createElement("div");
+  el.className = "floating";
+  el.innerHTML = icon;
+  el.style.color = color;
+  el.style.fontSize = Math.random() * 18 + 14 + "px";
+  el.style.left = Math.random() * 100 + "vw";
+  el.style.top = Math.random() * 100 + "vh";
+  el.style.setProperty("--x", Math.random());
+  el.style.setProperty("--y", Math.random());
+  el.style.animationDuration = 12 + Math.random() * 10 + "s";
+  bg.appendChild(el);
+  setTimeout(() => el.remove(), 20000);
+}
+
+setInterval(createStar, 300);
+setInterval(() => createFloating("❤", "#ff5c8a"), 600);
+setInterval(() => createFloating("🦋", "#f7b6d2"), 1500);
+</script>
+
+</body>
+</html>
