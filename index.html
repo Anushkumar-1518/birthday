@@ -20,10 +20,9 @@ body {
   background: radial-gradient(circle at top, #1b1f3b, #050510);
   color: #fff;
   overflow-x: hidden;
-  scroll-behavior: smooth;
 }
 
-/* ===== BACKGROUND ANIMATION ===== */
+/* ===== BACKGROUND ===== */
 .background {
   position: fixed;
   inset: 0;
@@ -31,6 +30,7 @@ body {
   overflow: hidden;
 }
 
+/* Stars */
 .star {
   position: absolute;
   width: 2px;
@@ -43,20 +43,18 @@ body {
 
 @keyframes starMove {
   0% { transform: translateY(0); opacity: 0.4; }
-  50% { opacity: 1; }
   100% { transform: translateY(-200vh); opacity: 0; }
 }
 
+/* Floating icons */
 .floating {
   position: absolute;
   pointer-events: none;
-  opacity: 0.9;
   animation: drift linear infinite;
 }
 
 @keyframes drift {
-  0% { transform: translate(0,0) rotate(0deg); }
-  100% {
+  to {
     transform: translate(
       calc(-150px + 300px * var(--x)),
       calc(-400px - 800px * var(--y))
@@ -76,10 +74,10 @@ body {
 .hero {
   height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   padding: 20px;
 }
 
@@ -106,13 +104,12 @@ body {
   color: white;
   border-radius: 30px;
   text-decoration: none;
-  font-size: 1rem;
   opacity: 0;
   animation: fadeIn 1.5s forwards;
   animation-delay: 5s;
 }
 
-/* ===== MEMORIES (HORIZONTAL SCROLL) ===== */
+/* ===== MEMORIES ===== */
 .gallery {
   padding: 80px 0;
 }
@@ -124,26 +121,44 @@ body {
   color: #ffd1dc;
 }
 
+/* Horizontal scroll */
 .memories {
   display: flex;
-  gap: 20px;
-  padding: 0 20px 20px;
+  gap: 24px;
+  padding: 0 20px 30px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
 }
 
-.memories::-webkit-scrollbar {
-  display: none;
+.memories::-webkit-scrollbar { display: none; }
+
+/* Card */
+.photo {
+  position: relative;
+  flex: 0 0 260px;
+  aspect-ratio: 3 / 4;
+  border-radius: 24px;
+  overflow: hidden;
+  scroll-snap-align: center;
+  transform: scale(0.92);
+  transition: transform 0.4s ease;
 }
 
-.photo {
-  flex: 0 0 260px;
-  height: 420px;
-  border-radius: 22px;
-  overflow: hidden;
-  position: relative;
-  scroll-snap-align: center;
-  box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+/* Faded border */
+.photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(255,92,138,0.7), rgba(255,255,255,0.2));
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s;
 }
 
 .photo img {
@@ -152,6 +167,7 @@ body {
   object-fit: cover;
 }
 
+/* Overlay */
 .overlay {
   position: absolute;
   inset: 0;
@@ -162,41 +178,50 @@ body {
   text-align: center;
   opacity: 0;
   padding: 20px;
-  transition: 0.3s;
+  transition: opacity 0.4s;
 }
 
-.photo:hover .overlay,
-.photo:active .overlay {
+/* ACTIVE CARD */
+.photo.active {
+  transform: scale(1.05);
+}
+
+.photo.active::before {
+  opacity: 1;
+}
+
+.photo.active .overlay {
   opacity: 1;
 }
 
 /* ===== FINAL MESSAGE ===== */
 .card {
   margin: 90px 20px 120px;
-  padding: 45px 30px;
+  padding: 48px 32px;
   background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(14px);
-  border-radius: 28px;
+  backdrop-filter: blur(16px);
+  border-radius: 30px;
   text-align: center;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.5);
 }
 
 .card h3 {
   font-family: 'Playfair Display', serif;
-  color: #ffd1dc;
+  font-size: 1.8rem;
   margin-bottom: 24px;
-  font-size: 1.7rem;
+  color: #ffd1dc;
 }
 
 .card p {
-  font-size: 1.05rem;
-  line-height: 1.9;
+  font-size: 1.08rem;
+  font-size: 1.12rem;
+  line-height: 2;
+  letter-spacing: 0.2px;
 }
 
-/* ===== RESPONSIVE ===== */
+/* Desktop */
 @media (min-width: 768px) {
-  .reel { max-width: 700px; }
-  .photo { flex: 0 0 320px; height: 480px; }
+  .reel { max-width: 720px; }
+  .photo { flex: 0 0 320px; }
 }
 </style>
 </head>
@@ -207,90 +232,72 @@ body {
 
 <div class="reel">
 
-<!-- HERO -->
 <section class="hero">
   <h1 id="typing"></h1>
   <p id="subText"></p>
   <a href="#gallery" class="btn">Start the Celebration 🎉</a>
 </section>
 
-<!-- MEMORIES -->
 <section id="gallery" class="gallery">
   <h2>Our Memories</h2>
 
-  <div class="memories">
-    <div class="photo">
-      <img src="images/IMG20250524203119.jpg">
-      <div class="overlay">Every smile of yours melts my heart ❤️</div>
-    </div>
-
-    <div class="photo">
-      <img src="images/Snapchat-960210138.jpg">
-      <div class="overlay">With you, everything feels right 💕</div>
-    </div>
-
-    <div class="photo">
-      <img src="images/Snapchat-647102358.jpg">
-      <div class="overlay">You are my forever 🫶</div>
-    </div>
-
-    <div class="photo">
-      <img src="images/Screenshot_2025-12-20-13-19-18-56_99c04817c0de5652397fc8b56c3b3817.jpg">
-      <div class="overlay">My favorite chapter of life ✨</div>
-    </div>
-
-    <div class="photo">
-      <img src="images/IMG_20250705_232615.jpg">
-      <div class="overlay">Just us. Just love 💖</div>
-    </div>
+  <div class="memories" id="memories">
+    <div class="photo"><img src="images/IMG20250524203119.jpg"><div class="overlay">Every smile of yours melts my heart ❤️</div></div>
+    <div class="photo"><img src="images/Snapchat-960210138.jpg"><div class="overlay">With you, everything feels right 💕</div></div>
+    <div class="photo"><img src="images/Snapchat-647102358.jpg"><div class="overlay">You are my forever 🫶</div></div>
+    <div class="photo"><img src="images/Screenshot_2025-12-20-13-19-18-56_99c04817c0de5652397fc8b56c3b3817.jpg"><div class="overlay">My favorite chapter of life ✨</div></div>
+    <div class="photo"><img src="images/IMG_20250705_232615.jpg"><div class="overlay">Just us. Just love 💖</div></div>
   </div>
 </section>
 
-<!-- FINAL MESSAGE -->
 <div class="card">
   <h3>A Special Message for You</h3>
-  <p>
-    Hey idiot,<br><br>
-    We didn’t just find each other in the easy moments—we found each other in the struggles,
-    the misunderstandings, the silences, and the storms that tested us.
-    We laughed through our happiest days, stumbled through our disputes,
-    faced moments of distance and departure, yet every step somehow brought us closer than before.<br><br>
+  <p>Hey idiot,<br><br>
 
-    We argued, we healed, we learned, and through it all, not once did my heart think of leaving.
-    Even when things were heavy, even when words failed us, choosing you always felt natural—effortless, certain.<br><br>
+We didn’t fall in love only during the easy days —  
+we chose each other through misunderstandings, silence, distance, and storms that tried to pull us apart.  
+We argued, we disagreed, we walked through moments that weren’t perfect…  
+yet every time, love brought us back closer than before.<br><br>
 
-    Today isn’t just your birthday; it’s a celebration of you, of us, of how far we’ve come hand in hand.
-    In a heartbeat, without doubt—today, tomorrow, always—I choose you.
-    My love for you has no end. 💖
-  </p>
+We laughed in our happiest moments, held on during the hardest ones,  
+and even when things felt heavy, my heart never once thought of leaving.  
+Choosing you was never a decision — it was always a feeling,  
+effortless, natural, certain.<br><br>
+
+Today isn’t just your birthday.  
+It’s a celebration of *you*, of *us*, of every step we’ve taken hand in hand.  
+With every year, every season, every imperfect moment, my choice remains the same.<br><br>
+
+In a heartbeat, without doubt —  
+today, tomorrow, and always — I choose you.  
+My love for you has no end. 💖
+</p>
 </div>
 
 </div>
 
 <script>
-/* NAME */
+/* Typing */
 const herName = "My Love";
-
-/* TYPING */
 const text = `Happy Birthday, ${herName} 💖`;
 const subText = "Today is all about celebrating you and the joy you bring into my life";
 let i = 0;
 
 function typeText() {
   if (i < text.length) {
-    document.getElementById("typing").innerHTML += text.charAt(i);
-    i++;
+    typing.innerHTML += text.charAt(i++);
     setTimeout(typeText, 90);
   } else {
-    document.getElementById("subText").innerText = subText;
+    subTextEl.innerText = subText;
   }
 }
+const typing = document.getElementById("typing");
+const subTextEl = document.getElementById("subText");
 typeText();
 
-/* BACKGROUND */
+/* Background */
 const bg = document.getElementById("background");
-
-function createStar() {
+setInterval(() => {
   const s = document.createElement("div");
   s.className = "star";
   s.style.left = Math.random() * 100 + "vw";
@@ -298,13 +305,13 @@ function createStar() {
   s.style.animationDuration = 20 + Math.random() * 30 + "s";
   bg.appendChild(s);
   setTimeout(() => s.remove(), 60000);
-}
+}, 300);
 
-function createFloating(icon, color) {
+setInterval(() => {
   const f = document.createElement("div");
   f.className = "floating";
-  f.innerHTML = icon;
-  f.style.color = color;
+  f.innerHTML = Math.random() > 0.5 ? "❤" : "🦋";
+  f.style.color = "#ff8fb1";
   f.style.fontSize = Math.random() * 18 + 14 + "px";
   f.style.left = Math.random() * 100 + "vw";
   f.style.top = Math.random() * 100 + "vh";
@@ -313,11 +320,17 @@ function createFloating(icon, color) {
   f.style.animationDuration = 12 + Math.random() * 10 + "s";
   bg.appendChild(f);
   setTimeout(() => f.remove(), 20000);
-}
+}, 900);
 
-setInterval(createStar, 300);
-setInterval(() => createFloating("❤", "#ff5c8a"), 600);
-setInterval(() => createFloating("🦋", "#f7b6d2"), 1500);
+/* Active card logic */
+const cards = document.querySelectorAll(".photo");
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    e.target.classList.toggle("active", e.isIntersecting);
+  });
+}, { threshold: 0.6 });
+
+cards.forEach(c => observer.observe(c));
 </script>
 
 </body>
